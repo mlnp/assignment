@@ -3,8 +3,6 @@ class UrlsController < ApplicationController
   def create
     long_url = params[:url]
     shortcode = params[:code]
-    logger.info "url: #{long_url}"
-    logger.info "shortcode: #{shortcode}"
     @url = Url.create({
       url: long_url,
       shortcode: shortcode,

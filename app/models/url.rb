@@ -1,14 +1,15 @@
 class Url < ApplicationRecord
 
   validates_uniqueness_of :shortcode
-  validates :shortcode, length: { is: 6 }
   validates :url, presence: true
+  validates :shortcode, length: { is: 6 }
   validates :shortcode, format: {
     with: /\A[a-zA-Z0-9]*\z/,
     message: "must be alphanumeric with no spaces or special characters"
   }
   validate :check_url_validity
 
+  before_validation :add_url_protocol
   before_validation :check_shortcode
 
   attr_accessor :tests_action
@@ -28,7 +29,6 @@ class Url < ApplicationRecord
 
     def check_shortcode
       return if self.tests_action
-      logger.info "check_shortcode"
       if self.shortcode.blank?
         logger.info "No shortcode found; generating"
         self.generate_shortcode
@@ -40,6 +40,12 @@ class Url < ApplicationRecord
     rescue => err
       logger.error err
       self.errors.add(:url, :invalid_url, message: "must be a valid URL")
+    end
+
+    def add_url_protocol
+      unless self.url.start_with?("http://", "https://")
+        self.url = "http://#{self.url}"
+      end
     end
 
 end
