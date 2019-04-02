@@ -3,12 +3,19 @@ class UrlsController < ApplicationController
   def create
     long_url = params[:url]
     shortcode = params[:code]
+    logger.info "url: #{long_url}"
+    logger.info "shortcode: #{shortcode}"
     @url = Url.create({
       url: long_url,
       shortcode: shortcode,
       })
     if @url.errors.empty?
-      render json: @url
+      render json: {code: @url.shortcode}, status: 201
+    elsif @url.errors.details[:shortcode].any? { |e| e[:error] == :taken }
+      # If shortcode is already taken, need to return a 409 instead of 422
+      render json: {error: @url.errors.full_messages.join("; ")}, status: 409
+    elsif @url.errors.details[:url].any? { |e| e[:error] == :invalid_url }
+      render json: {error: @url.errors.full_messages.join("; ")}, status: 400
     else
       render json: {error: @url.errors.full_messages.join("; ")}, status: 422
     end
