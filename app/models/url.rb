@@ -43,6 +43,7 @@ class Url < ApplicationRecord
     end
 
     def add_url_protocol
+      return if self.url.blank?
       unless self.url.start_with?("http://", "https://")
         self.url = "http://#{self.url}"
       end
