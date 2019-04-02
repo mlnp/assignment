@@ -18,6 +18,12 @@ class Url < ApplicationRecord
     self.shortcode = SecureRandom.base58(6)
   end
 
+  def record_usage
+    self.increment(:usage_count)
+    self.last_usage = Time.current
+    self.save
+  end
+
   private
 
     def check_shortcode
@@ -30,9 +36,7 @@ class Url < ApplicationRecord
     end
 
     def check_url_validity
-      logger.info "checking URL validity"
       uri = URI(self.url)
-      logger.info "URL validity OK"
     rescue => err
       logger.error err
       self.errors.add(:url, :invalid_url, message: "must be a valid URL")

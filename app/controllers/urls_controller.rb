@@ -26,7 +26,8 @@ class UrlsController < ApplicationController
     @url = Url.find_by(shortcode: code)
 
     if @url
-      # Rails will give us a 302 :)
+      @url.record_usage
+      # Rails will give us a 302 when we use redirect_to :)
       redirect_to @url.url
     else
       render json: {error: "Shortcode #{code} not found"}, status: 404
