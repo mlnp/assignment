@@ -21,6 +21,18 @@ class UrlsController < ApplicationController
     end
   end
 
+  def show
+    code = params[:code]
+    @url = Url.find_by(shortcode: code)
+
+    if @url
+      # Rails will give us a 302 :)
+      redirect_to @url.url
+    else
+      render json: {error: "Shortcode #{code} not found"}, status: 404
+    end
+  end
+
   private
 
   def url_params
