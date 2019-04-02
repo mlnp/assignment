@@ -11,6 +11,8 @@ class Url < ApplicationRecord
 
   before_validation :check_shortcode
 
+  attr_accessor :tests_action
+
   def generate_shortcode
     # BASE58_ALPHABET	=	("0".."9").to_a + ("A".."Z").to_a + ("a".."z").to_a - ["0", "O", "I", "l"]
     self.shortcode = SecureRandom.base58(6)
@@ -19,6 +21,7 @@ class Url < ApplicationRecord
   private
 
     def check_shortcode
+      return if self.tests_action
       logger.info "check_shortcode"
       if self.shortcode.blank?
         logger.info "No shortcode found; generating"
