@@ -9,6 +9,8 @@ bundle install
 
 3. Once the process is complete, run
 ```
+rails db:create
+rails db:migrate
 rails server
 ```
 4. You should now be able to make API requests using Postman or Insomnia to `http://localhost:3000`.
