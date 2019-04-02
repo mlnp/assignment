@@ -34,6 +34,24 @@ class UrlsController < ApplicationController
     end
   end
 
+  def stats
+    code = params[:code]
+    @url = Url.find_by(shortcode: code)
+    if @url
+      response = {
+        created_at: @url.created_at,
+        last_usage: @url.last_usage,
+        usage_count: @url.usage_count,
+      }
+      if @url.last_usage.blank?
+        response.delete(:last_usage)
+      end
+      render json: response
+    else
+      render json: {error: "Shortcode #{code} not found"}, status: 404
+    end
+  end
+
   private
 
   def url_params
