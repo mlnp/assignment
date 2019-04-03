@@ -5,7 +5,7 @@ Welcome to my code challenge!  To install on your local system, follow these ste
 ```
 bundle install
 ```
-(Note: If you get `bundle: command not found`, you need to `gem install bundler` first.)
+(Note: If you get `bundle: command not found`, you may need to `sudo gem install bundler` first.)
 
 3. Once the process is complete, run
 ```
