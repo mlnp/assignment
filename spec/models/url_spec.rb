@@ -19,7 +19,7 @@ RSpec.describe Url, type: :model do
     end
 
     it "is invalid without a url protocol" do
-      subject.tests_action = true
+      subject.tests_action = true # don't run add_url_protocol
       subject.url = "www.example.com"
       expect(subject).not_to be_valid
     end
