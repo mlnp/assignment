@@ -37,13 +37,16 @@ class Url < ApplicationRecord
 
     def check_url_validity
       uri = URI(self.url)
+      unless uri.scheme == "http" || uri.scheme == "https"
+        self.errors.add(:url, :invalid_url, message: "must include http:// or https://")
+      end
     rescue => err
       logger.error err
       self.errors.add(:url, :invalid_url, message: "must be a valid URL")
     end
 
     def add_url_protocol
-      return if self.url.blank?
+      return if self.url.blank? || self.tests_action
       unless self.url.start_with?("http://", "https://")
         self.url = "http://#{self.url}"
       end

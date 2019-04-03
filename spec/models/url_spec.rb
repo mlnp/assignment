@@ -18,6 +18,12 @@ RSpec.describe Url, type: :model do
       expect(subject).not_to be_valid
     end
 
+    it "is invalid without a url protocol" do
+      subject.tests_action = true
+      subject.url = "www.example.com"
+      expect(subject).not_to be_valid
+    end
+
     it "is invalid without a shortcode" do
       subject.tests_action = true # don't run generate_shortcode
       subject.shortcode = nil
