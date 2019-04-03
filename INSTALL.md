@@ -14,7 +14,7 @@ rails db:migrate
 rails server
 ```
 4. You should now be able to make API requests using Postman or Insomnia to `http://localhost:3000`.
-5. To run tests, type
+5. To run tests, ^C to exit rails server, then type
 ```
 rspec -fd
 ```
